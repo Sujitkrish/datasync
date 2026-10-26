@@ -1,18 +1,17 @@
 import pandas as pd
 from sqlalchemy import URL, create_engine
 
-# Step 1: Read Excel file
-excel_file = "Data_sync.xlsx"  
+# Read Excel file
+excel_file = "file.xlsx"  # Add file path
 datasync_df = pd.read_excel(excel_file)
 
 #Connect to Database
-
 connection_url = URL.create(
     "mssql+pyodbc",
-    username= "p_user",
-    password= "Sujitstark",
-    host=r"DESKTOP-AA09DTD\SETARK",
-    database="datasyncp1",
+    username= "username",  #replace user name with your user name
+    password= "password",  #replace password with your password
+    host=r"host",          #replace host with your host
+    database="database",   #replace database with your database
     query={
         "driver": "ODBC Driver 17 for SQL Server",
         "TrustServerCertificate": "yes",
@@ -20,9 +19,6 @@ connection_url = URL.create(
 )
 engine = create_engine(connection_url)
 
-#step 3: Sync Students Table
-datasync_df.to_sql("super_market", con=engine, if_exists="replace", index=False)
-
-
-
-print("Database updated successfully from Excel using SQLAlchemy + SQL Server!")
+#Sync database Table
+datasync_df.to_sql("table name", con=engine, if_exists="append", index=False)  #replace table name with your table name
+print("Database updated successfully")
